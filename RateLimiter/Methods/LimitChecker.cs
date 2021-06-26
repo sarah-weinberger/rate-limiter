@@ -10,6 +10,7 @@ namespace RateLimiter.Methods
 	/// </summary>
 	public partial class LimitChecker : IDisposable
 	{
+		#region Constructors
 		/// <summary>
 		/// 
 		/// </summary>
@@ -20,7 +21,12 @@ namespace RateLimiter.Methods
 			ThreadStart threadStart = new ThreadStart(this.ThreadTaskChecker);
 			this.ThreadChecker = new Thread(threadStart);
 			this.ThreadChecker.Start();
+
+			// Instantiate the rate limiter check objects.
+			this.RuleRequests = new RateLimiter.Rules.RuleRequests(this.SpanRequestsSeconds, this.MaxRequests);
+			this.RuleLastCall = new RateLimiter.Rules.RuleLastCall(this.MinTimeLastCall);
 		}
+		#endregion Constructors
 
 		/// <summary>
 		/// 
@@ -32,7 +38,9 @@ namespace RateLimiter.Methods
 			// Check Rule: Requests Per Timespan
 			if (this.RuleTypes.HasFlag(RuleTypes.RequestsPerTimespan))
 			{
-				RuleResult result = Rules.RequestsPerTimespan(this.SpanRequestsSeconds, this.MaxRequests, clientCall);
+				this.RuleRequests.Timespan = this.SpanRequestsSeconds;
+				this.RuleRequests.MaxRequests = this.MaxRequests;
+				RuleResult result = this.RuleRequests.CheckForDot(clientCall);
 				if (RuleResult.Compliant != result)
 					return result;
 			}
@@ -40,7 +48,8 @@ namespace RateLimiter.Methods
 			// Check Rule: Timespan Since Last Call
 			if (this.RuleTypes.HasFlag(RuleTypes.TimespanSinceLastCall))
 			{
-				RuleResult result = Rules.TimespanSinceLastCall(this.MinTimeLastCall, clientCall);
+				this.RuleLastCall.MinTime = this.MinTimeLastCall;
+				RuleResult result = this.RuleLastCall.CheckForDot(clientCall);
 				if (RuleResult.Compliant != result)
 					return result;
 			}

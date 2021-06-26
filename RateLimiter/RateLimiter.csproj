@@ -53,8 +53,10 @@
     <Compile Include="ObjResources\Resource1.cs" />
     <Compile Include="Enums\Locations.cs" />
     <Compile Include="Methods\LimitChecker.cs" />
-    <Compile Include="Methods\Rules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\RuleBase.cs" />
+    <Compile Include="Rules\RuleLastCall.cs" />
+    <Compile Include="Rules\RuleRequests.cs" />
     <Compile Include="Types\ClientCallType.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using RateLimiter.Enums;
+using RateLimiter.Rules;
 using RateLimiter.Types;
 
 namespace RateLimiter.Methods
@@ -11,6 +12,16 @@ namespace RateLimiter.Methods
 		/// 
 		/// </summary>
 		private readonly List<ClientCallType> ClientCalls = new List<ClientCallType>();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private readonly RuleRequests RuleRequests = null;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private readonly RuleLastCall RuleLastCall = null;
 
 		/// <summary>
 		/// 
